@@ -19,4 +19,7 @@ async(void *f, void *args, ThreadErr *err);
 extern ThreadErr
 await(ThreadId thread);
 
+extern ThreadErr
+astop(ThreadId thread);
+
 #endif

@@ -24,6 +24,12 @@ await(ThreadId thread)
     return (ThreadErr)WaitForSingleObject(thread, INFINITE);
 }
 
+ThreadErr
+astop(ThreadId thread)
+{
+    return TerminateThread(thread, 0);
+}
+
 #else
 ThreadId
 async(void *f, void *args, ThreadErr *err)
@@ -38,5 +44,11 @@ ThreadErr
 await(ThreadId thread)
 {
     return (ThreadErr)pthread_join(thread, NULL);
+}
+
+ThreadErr
+astop(ThreadId thread)
+{
+    return pthread_cancel(thread);
 }
 #endif
