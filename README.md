@@ -2,8 +2,10 @@
 Multithreading can be very complicated in C, POSIX and Windows multithreading functions are not the same for instance.
 This library was made in order to palliate this issue and facilitate the use of asynchronous instructions in C.
 
+
 # How to install
 Just drop `async.h` and `async.c` in your project and include `async.h` using a relative path.
+
 
 # Usage
 ## async()
@@ -22,10 +24,11 @@ This function is used to start any functions asynchronously.
 It returns a `ThreadId` which is a `pthread_t` (`pthread.h`) on POSIX operating systems and a `HANDLE` (`windows.h`) on Windows.
 The returned value can be `NULL` if their is an error.
 
+
 ## await()
 ```c
 ThreadErr
-await(ThreadId thread)
+await(ThreadId thread);
 ```
 This function is used to wait for a thread to end before continuing the program.
 
@@ -34,6 +37,21 @@ This function is used to wait for a thread to end before continuing the program.
 
 ### Return value
 It's the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
+
+
+## astop()
+```c
+ThreadErr
+astop(ThreadId thread);
+```
+Terminate a thread. Considered as an unsafe instruction.
+
+### Parameters
+**thread**: a `ThreadId`, returned by the [`async()`](#async) function.
+
+### Return value
+It's the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
+
 
 ## Example
 ```c
