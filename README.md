@@ -6,6 +6,7 @@ This library was made in order to palliate this issue and facilitate the use of 
 # How to install
 Just drop `async.h` and `async.c` in your project and include `async.h` using a relative path.
 
+Sometimes you will need to add `-pthread` in gcc options (only if not on Windows).
 
 # Usage
 ## async()
