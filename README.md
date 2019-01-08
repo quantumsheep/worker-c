@@ -1,6 +1,6 @@
 # Async library
 Multithreading can be very complicated in C, POSIX and Windows multithreading functions are not the same for instance.
-This library was made in order to palliate this issue and facilitate the use of asynchronous instructions in C.
+This library was made in order to palliate this issue and facilitate the use and creation of new threads in C.
 
 
 # How to install
@@ -14,10 +14,10 @@ Sometimes you will need to add `-pthread` in gcc options (only if not on Windows
 ThreadId
 async(void *f, void *args, ThreadErr *err);
 ```
-This function is used to start any functions asynchronously. 
+This function is used to start any functions as a new thread. 
 
 ### Parameters
-**f**: the function that will be run asynchronously.  
+**f**: the function that will be run as a new thread.  
 **args**: arguments to be passed to the given function.  
 **err**: the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
 
