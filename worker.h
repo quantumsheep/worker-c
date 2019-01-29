@@ -1,5 +1,5 @@
 #ifndef _WORKER_H
-#define _WORKER_H 1
+#define _WORKER_H
 
 #ifdef _WIN32
 #include <windows.h>
