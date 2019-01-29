@@ -9,10 +9,10 @@ Just drop `async.h` and `async.c` in your project and include `async.h` using a 
 Sometimes you will need to add `-lpthread` in gcc options (only if not on Windows).
 
 # Usage
-## async()
+## worker()
 ```c
-ThreadId
-async(void *f, void *args, ThreadErr *err);
+WorkerId
+worker(void *f, void *args, WorkerErr *err);
 ```
 This function is used to start any functions as a new thread. 
 
@@ -22,33 +22,33 @@ This function is used to start any functions as a new thread.
 **err**: the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
 
 ### Return value
-It returns a `ThreadId` which is a `pthread_t` (`pthread.h`) on POSIX operating systems and a `HANDLE` (`windows.h`) on Windows.
+It returns a `WorkerId` which is a `pthread_t` (`pthread.h`) on POSIX operating systems and a `HANDLE` (`windows.h`) on Windows.
 The returned value can be `NULL` if their is an error.
 
 
-## await()
+## worker_wait()
 ```c
-ThreadErr
-await(ThreadId thread);
+WorkerErr
+worker_wait(WorkerId thread);
 ```
 This function is used to wait for a thread to end before continuing the program.
 
 ### Parameters
-**thread**: a `ThreadId`, returned by the [`async()`](#async) function.
+**thread**: a `WorkerId`, returned by the [`worker()`](#worker) function.
 
 ### Return value
 It's the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
 
 
-## astop()
+## worker_stop()
 ```c
-ThreadErr
-astop(ThreadId thread);
+WorkerErr
+worker_stop(WorkerId thread);
 ```
 Terminate a thread. Considered as an unsafe instruction.
 
 ### Parameters
-**thread**: a `ThreadId`, returned by the [`async()`](#async) function.
+**thread**: a `WorkerId`, returned by the [`worker()`](#worker) function.
 
 ### Return value
 It's the error code number, literally an `unsigned long`. It can be `NULL` but if not, see [`pthread_create` POSIX information page](http://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_create.html) for Linux or OSX and [`GetLastError()` documentation](https://msdn.microsoft.com/fr-fr/d852e148-985c-416f-a5a7-27b6914b45d4) for Windows.
@@ -56,7 +56,7 @@ It's the error code number, literally an `unsigned long`. It can be `NULL` but i
 
 ## Example
 ```c
-#include "async/async.h"
+#include "worker/worker.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -69,7 +69,7 @@ timeout(int time)
 }
 
 void
-handleError(ThreadErr err)
+handleError(WorkerErr err)
 {
     if (err)
     {
@@ -81,15 +81,15 @@ handleError(ThreadErr err)
 int
 main(int argc, char** argv)
 {
-    ThreadErr err;
+    WorkerErr err;
 
     void* args = { 2 };
-    ThreadId thread = async(timeout, args, &err);
+    WorkerId thread = worker(timeout, args, &err);
     handleError(err);
 
     printf("The thread has started!\n");
 
-    err = await(thread);
+    err = worker_wait(thread);
     handleError(err);
 
     printf("Timeout finished.\n");
