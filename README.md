@@ -1,4 +1,4 @@
-# Async library
+# Worker library
 Multithreading can be very complicated in C, POSIX and Windows multithreading functions are not the same for instance.
 This library was made in order to palliate this issue and facilitate the use and creation of new threads in C.
 
